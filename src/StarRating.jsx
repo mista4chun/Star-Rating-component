@@ -7,19 +7,27 @@ const containerStyle = {
   gap: '8px',
 };
 
-const lineStyle = {
-  lineHeight: '1',
-  margin: '0',
-};
-
-function StarRating({ maxRating = 5, color = '#FFD700', size= '24' }) {
-  const [rating, setRating] = useState(0);
+function StarRating({
+  maxRating = 5,
+  color = '#FFD700',
+  size = '24',
+  messages = [],
+  defaultRating = 0,
+}) {
+  const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
   function handleRating(newRating) {
     setRating(newRating);
     setTempRating(newRating);
   }
+
+  const lineStyle = {
+    lineHeight: '1',
+    margin: '0',
+    color: color,
+    fontSize: `${size / 1.5}px`,
+  };
 
   return (
     <div style={containerStyle}>
@@ -36,7 +44,11 @@ function StarRating({ maxRating = 5, color = '#FFD700', size= '24' }) {
           />
         ))}
       </span>
-      <p style={lineStyle}>{tempRating || rating || ''}</p>
+      <p style={lineStyle}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ''}
+      </p>
     </div>
   );
 }
